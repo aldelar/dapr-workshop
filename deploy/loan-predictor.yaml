@@ -1,12 +1,12 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: bindings-ai-service
+  name: bindings-loan-predictor
   labels:
-    app: bindingsaiservice
+    app: bindingsloanpredictor
 spec:
   selector:
-    app: bindingsaiservice
+    app: bindingsloanpredictor
   ports:
   - protocol: TCP
     port: 80
@@ -17,25 +17,25 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ai-service
+  name: loan-predictor
   labels:
-    app: ai-service
+    app: loan-predictor
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: ai-service
+      app: loan-predictor
   template:
     metadata:
       labels:
-        app: ai-service
+        app: loan-predictor
       annotations:
         dapr.io/enabled: "true"
-        dapr.io/id: "ai-service"
+        dapr.io/id: "loan-predictor"
         dapr.io/port: "3000"
     spec:
       containers:
-      - name: ai-service
-        image: daprcr.azurecr.io/dapr/ai-service:latest
+      - name: loan-predictor
+        image: daprcr.azurecr.io/dapr/loan-predictor:latest
         ports:
           - containerPort: 3000
