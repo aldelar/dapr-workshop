@@ -1,0 +1,11 @@
+name: dapr-workshop-loan-predictor
+channels:
+  - defaults
+dependencies:
+  - pip
+  - pylint
+  - python=3.7
+  - pip:
+    - fastapi
+    - requests
+    - uvicorn

@@ -1,0 +1,1 @@
+uvicorn ai-service.app.main:app --host localhost --port 88

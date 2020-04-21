@@ -1,0 +1,16 @@
+apiVersion: "aadpodidentity.k8s.io/v1"
+kind: AzureIdentity
+metadata:
+  name: akvmanagedidentity
+spec:
+  type: 0
+  ResourceID: /subscriptions/   /resourcegroups/dapr/providers/Microsoft.ManagedIdentity/userAssignedIdentities/akvmanagedidentity
+  ClientID: 
+---
+apiVersion: "aadpodidentity.k8s.io/v1"
+kind: AzureIdentityBinding
+metadata:
+  name: akvmanagedidentity-identity-binding
+spec:
+  AzureIdentity: akvmanagedidentity
+  Selector: akvmanagedidentity

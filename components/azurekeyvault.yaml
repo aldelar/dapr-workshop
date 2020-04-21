@@ -1,0 +1,21 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: azurekeyvault
+spec:
+  type: secretstores.azure.keyvault
+  metadata:
+  - name: vaultName
+    value: gsakv
+  - name: spnTenantId
+    value: "   "
+  - name: spnClientId
+    value: "   "
+  - name: spnCertificateFile
+    value : "gscert.pfx"
+  - name: spnCertificate
+    secretKeyRef:
+      name: spncertificate
+      key: "gscert.pfx"
+auth:
+    secretStore: kubernetes
