@@ -6,16 +6,8 @@ spec:
   type: secretstores.azure.keyvault
   metadata:
   - name: vaultName
-    value: gsakv
-  - name: spnTenantId
-    value: "   "
+    value: daprworkshopakv
   - name: spnClientId
-    value: "   "
-  - name: spnCertificateFile
-    value : "gscert.pfx"
-  - name: spnCertificate
-    secretKeyRef:
-      name: spncertificate
-      key: "gscert.pfx"
+    value: 0e0fbba3-708e-41b5-8860-78a14016cad9
 auth:
     secretStore: kubernetes

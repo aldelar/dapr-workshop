@@ -29,6 +29,7 @@ spec:
     metadata:
       labels:
         app: loan-predictor
+        aadpodidbinding: daprworkshopmi
       annotations:
         dapr.io/enabled: "true"
         dapr.io/id: "loan-predictor"
@@ -36,6 +37,6 @@ spec:
     spec:
       containers:
       - name: loan-predictor
-        image: daprcr.azurecr.io/dapr/loan-predictor:latest
+        image: daprworkshopacr.azurecr.io/daprworkshop/loan-predictor:latest
         ports:
           - containerPort: 3000

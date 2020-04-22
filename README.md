@@ -53,6 +53,12 @@ DNS:
 
 [Miniconda](https://docs.conda.io/en/latest/miniconda.html)
 
+## Install Scoop
+
+suggested:
+
+    iwr -useb get.scoop.sh | iex
+
 ## Install dapr
 
 [dapr](https://dapr.io/)
@@ -65,9 +71,19 @@ DNS:
 
 [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 
-## Install Helm 3
+## Install Helm 3.1
 
 [helm](https://helm.sh/docs/intro/install/)
+
+suggested:
+
+    scoop install helm=3.1.0
+
+## Install Make
+
+suggested:
+
+    scoop install make
 
 ## Register AKS with Kubectl
 
@@ -76,3 +92,11 @@ DNS:
 ## Setup Azure Key Vault with Managed Identity
 
 [Use Azure Key Vault secret store in Kubernetes mode using Managed Identities](https://github.com/dapr/docs/blob/master/howto/setup-secret-store/azure-keyvault-managed-identity.md)
+
+## Install Dapr in Kubernetes
+
+[Using Helm](https://github.com/dapr/docs/blob/master/getting-started/environment-setup.md#using-helm-advanced)
+
+## Authenticate ACR with Docker
+
+    az acr login --name prxdaprworkshopacr
