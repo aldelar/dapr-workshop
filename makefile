@@ -69,5 +69,5 @@ undeploy-apps:
 # Run market-data-provider service
 .PHONY: run
 run: run-loan-predictor
-run-ai-service:
+run-loan-predictor:
 	dapr run --app-id loan-predictor run-loan-predictor.bat
