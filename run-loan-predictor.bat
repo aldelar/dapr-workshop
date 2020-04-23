@@ -1,1 +1,1 @@
-uvicorn ai-service.app.main:app --host localhost --port 88
+uvicorn loan-predictor.app.main:app --host localhost --port 88
