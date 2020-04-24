@@ -9,5 +9,3 @@ spec:
     value: daprworkshopakv
   - name: spnClientId
     value: 0e0fbba3-708e-41b5-8860-78a14016cad9
-auth:
-    secretStore: kubernetes

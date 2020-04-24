@@ -70,4 +70,4 @@ undeploy-apps:
 .PHONY: run
 run: run-loan-predictor
 run-loan-predictor:
-	dapr run --app-id loan-predictor run-loan-predictor.bat
+	dapr run --app-id loan-predictor --port 808 run-loan-predictor.bat

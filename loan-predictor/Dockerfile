@@ -5,3 +5,5 @@ COPY ./app /app
 COPY ./requirements.txt .
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
+# Overides defaults of https://github.com/tiangolo/uvicorn-gunicorn-docker/blob/master/python3.7/gunicorn_conf.py
+ENV PORT 808

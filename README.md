@@ -67,6 +67,12 @@ suggested:
 
 [Docker Desktop](https://www.docker.com/products/docker-desktops)
 
+## Authenticate Docker against Azure Container Registry
+
+Go to the Azure Container Registry in the Azure portal, click on 'Access Keys' and enable the 'Admin User'. You will find there a username and two passwords you can use with the command below to authenticate Docker against ACR.
+
+    docker login prxdaprworkshopacr --username _username_ --password _password_
+
 ## Install Kubectl
 
 [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
