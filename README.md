@@ -100,9 +100,9 @@ suggested:
 
     az aks get-credentials --resource-group dapr-workshop --name prxdaprworkshopaks
 
-## Setup Azure Key Vault with Managed Identity
+## Setup Azure Key Vault
 
-[Use Azure Key Vault secret store in Kubernetes mode using Managed Identities](https://github.com/dapr/docs/blob/master/howto/setup-secret-store/azure-keyvault-managed-identity.md)
+[Use Azure Key Vault secret store in Kubernetes mode](https://github.com/dapr/docs/blob/master/howto/setup-secret-store/azure-keyvault.md)
 
 ## Install Dapr in Kubernetes
 
