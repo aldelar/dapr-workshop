@@ -102,7 +102,7 @@ suggested:
 
 ## Setup Azure Key Vault
 
-[Use Azure Key Vault secret store in Kubernetes mode](https://github.com/dapr/docs/blob/master/howto/setup-secret-store/azure-keyvault.md)
+[Setup Secret Store for Azure Key Vault](https://github.com/dapr/docs/blob/master/howto/setup-secret-store/azure-keyvault.md)
 
 ## Install Dapr in Kubernetes
 
