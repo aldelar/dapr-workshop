@@ -21,14 +21,6 @@ prx: a prefix of your own to avoid URI conflicts. For instance: 3 letters based 
 
     name:   dapr-workshop
 
-## Create an Azure Key Vault (AKV)
-
-    name:   prxdaprworkshopakv
-
-## Create an Azure Container Registry (ACR)
-
-    name:   prxdaprworkshopacr
-
 ## Create an Azure Kubernetes Service (AKS)
 
     name:   prxdaprworkshopaks
@@ -42,6 +34,15 @@ VNET:
 DNS:
 
     name:   daprworkshopdns
+
+## Create an Azure Key Vault (AKV)
+
+    name:   prxdaprworkshopakv
+
+## Create an Azure Container Registry (ACR)
+
+    name:   prxdaprworkshopacr
+    Admin:  enabled
 
 ## Register ACR with AKS
 
