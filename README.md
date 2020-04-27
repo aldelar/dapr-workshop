@@ -39,6 +39,10 @@ DNS:
 
     name:   prxdaprworkshopakv
 
+On the networking pane, select 'Public endpoint (selected networks)' and then select the VNET created while creating AKS, and the 'default' subnet. Click Create to create an endpoint. Once the endpoint is created, click 'Add'.
+
+Keep the rest of the defaults.
+
 ## Create an Azure Container Registry (ACR)
 
     name:   prxdaprworkshopacr
