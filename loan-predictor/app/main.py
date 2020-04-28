@@ -29,14 +29,13 @@ def get_secret(secret_store_name: str, secret_name: str):
     dapr_url = f"http://localhost:{dapr_port}/v1.0/secrets/{secret_store_name}/{secret_name}"
     logging.warning(dapr_url)
     response = requests.get(dapr_url)
-    logging.warning(response)
     response_text = response.text
-    logging.warning(response_text)
-
-    return response_text
-    #secret_value = json.loads(response_text)[secret_name]
-    #return {
-    #    'secret_store_name': secret_store_name,
-    #    'secret_name': secret_name,
-    #    'secret_value' : secret_value
-    #    }
+    if response.status_code == 200:
+        secret_value = json.loads(response_text)[secret_name]
+        return {
+            'secret_store_name': secret_store_name,
+            'secret_name': secret_name,
+            'secret_value' : secret_value
+            }
+    else:
+        return response_text
