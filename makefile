@@ -106,7 +106,7 @@ define runApp
 	dapr run --app-id $(1) --app-port 808 run-$(1).bat
 endef
 #
-# DEV: Run market-data-provider service in local standalone dev mode (Docker Desktop)
+# DEV: Run apps service in local standalone dev mode (Docker Desktop)
 #
 .PHONY: dev
 dev:
