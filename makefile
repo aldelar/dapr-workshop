@@ -123,3 +123,22 @@ qa: use-qa re-build-deploy
 #
 .PHONY: prod
 prod: use-prod re-build-deploy
+
+# Upgrade Services
+.PHONE: upgrade-services
+upgrade-services:
+	helm repo update
+	helm upgrade redis bitnami/redis
+	helm upgrade dapr dapr/dapr -n dapr-system
+
+#
+# QA: upgrade services
+#
+.PHONY: upgrade-qa
+upgrade-qa: use-qa upgrade-services
+
+#
+# PRODUCTION: upgrade-services
+#
+.PHONY: upgrade-prod
+upgrade-prod: use-prod upgrade-services
