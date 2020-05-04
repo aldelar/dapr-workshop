@@ -1,7 +1,7 @@
 # Define apps and registry
-APPS                ?=loan-predictor
-REGISTRY 		    ?=.azurecr.io/daprworkshop
-REL_VERSION         ?=latest
+APPS      	?=loan-predictor
+REGISTRY 	?=.azurecr.io/daprworkshop
+REL_VERSION ?=latest
 
 # Docker image build and push setting
 DOCKER:=docker

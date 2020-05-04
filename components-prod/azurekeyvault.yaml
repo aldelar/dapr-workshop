@@ -10,7 +10,7 @@ spec:
   - name: spnTenantId
     value: 72f988bf-86f1-41af-91ab-2d7cd011db47
   - name: spnClientId
-    value: f0fba02a-c6d7-4613-90fc-5e12414f6b24
+    value: dfcfbc62-e990-4949-8eae-fc08d4c62a67
   - name: spnCertificate
     secretKeyRef:
       name: daprworkshopspcert
