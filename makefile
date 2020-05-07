@@ -103,7 +103,7 @@ re-build-deploy: build push undeploy deploy
 # Params:
 # $(1): app name
 define runApp
-	dapr run --app-id $(1) --app-port 808 "$(1)/app/run.bat"
+	dapr run --app-id $(1) --app-port 808 run-$(1).bat
 endef
 #
 # DEV: Run apps services in local standalone dev mode (Docker Desktop)

@@ -1,1 +1,0 @@
-uvicorn app.main:app --host localhost --port 808
