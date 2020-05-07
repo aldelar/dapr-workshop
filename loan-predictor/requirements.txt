@@ -1,1 +1,10 @@
+azureml-defaults==1.1.5.1
+azureml-explain-model==1.1.5
+azureml-train-automl-runtime==1.1.5.3
+fbprophet==0.5
+inference-schema
+pystan
+pytz<2020
 requests
+scikit-learn>=0.19.0,<=0.20.3
+xgboost<=0.80
