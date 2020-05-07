@@ -60,19 +60,16 @@ class LoanRequest(BaseModel):
 @app.post('/scores/')
 def scores(loan_request: LoanRequest):
     try:
-        logging.warning(f"LR:{loan_request}")
         data_dict = loan_request.__dict__
         # adjust keys for model inputs
         fix_key(data_dict, 'emp_var_rate', 'emp.var.rate')
         fix_key(data_dict, 'cons_price_idx', 'cons.price.idx')
         fix_key(data_dict, 'cons_conf_idx', 'cons.conf.idx')
         fix_key(data_dict, 'nr_employed', 'nr.employed')
-        #
-        logging.warning(f"DD:{data_dict}")
+        # convert to DataFrame and predict
         data_df = pd.DataFrame.from_dict(data_dict)
-        logging.warning(f"DF:{data_df}")
         result = model.predict(data_df)
-        return json.dumps({"result": result.tolist()})
+        return json.dumps({"loan accepted": result.tolist()})
     except Exception as e:
         result = str(e)
         return json.dumps({"error": result})
