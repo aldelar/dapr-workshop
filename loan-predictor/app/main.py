@@ -3,6 +3,8 @@
 # ----------------------------------------------------
 
 from fastapi import FastAPI
+from pydantic import BaseModel
+from typing import List
 app = FastAPI()
 
 import logging
@@ -28,25 +30,59 @@ dapr_port = os.getenv("DAPR_HTTP_PORT", 3500)
 # EXAMPLE: access secret store secret
 #dapr_url = f"http://localhost:{dapr_port}/v1.0/secrets/{secret_store_name}/{secret_name}"
 
-# load scoring model
+# scoring model
 model = joblib.load('model.pkl')
-# scoring input/output format
-input_sample = pd.DataFrame(data=[{'age': 24, 'job': 'technician', 'marital': 'single', 'education': 'university.degree', 'default': 'no', 'housing': 'no', 'loan': 'yes', 'contact': 'cellular', 'month': 'jul', 'day_of_week': 'wed', 'duration': 109, 'campaign': 3, 'pdays': 999, 'previous': 0, 'poutcome': 'nonexistent', 'emp.var.rate': 1.4, 'cons.price.idx': 93.918, 'cons.conf.idx': -42.7, 'euribor3m': 4.963, 'nr.employed': 5228.1}], columns=['age', 'job', 'marital', 'education', 'default', 'housing', 'loan', 'contact', 'month', 'day_of_week', 'duration', 'campaign', 'pdays', 'previous', 'poutcome', 'emp.var.rate', 'cons.price.idx', 'cons.conf.idx', 'euribor3m', 'nr.employed'])
-output_sample = np.array([0])
 
-# test app booted up properly
-@app.get('/')
-def hello():
-    return input_sample.to_json()
+# request model
+class LoanRequest(BaseModel):
+    age: List[int]
+    job: List[str]
+    marital: List[str]
+    education: List[str]
+    default: List[str]
+    housing: List[str]
+    loan: List[str]
+    contact: List[str]
+    month: List[str]
+    day_of_week: List[str]
+    duration: List[int]
+    campaign: List[int]
+    pdays: List[int]
+    previous: List[int]
+    poutcome: List[str]
+    emp_var_rate: List[float]
+    cons_price_idx: List[float]
+    cons_conf_idx: List[float]
+    euribor3m: List[float]
+    nr_employed: List[float]
 
 # scoring API
-@input_schema('data', PandasParameterType(input_sample))
-@output_schema(NumpyParameterType(output_sample))
 @app.post('/scores/')
-def scores(data):
+def scores(loan_request: LoanRequest):
     try:
-        result = model.predict(data)
+        logging.warning(f"LR:{loan_request}")
+        data_dict = loan_request.__dict__
+        # adjust keys for model inputs
+        fix_key(data_dict, 'emp_var_rate', 'emp.var.rate')
+        fix_key(data_dict, 'cons_price_idx', 'cons.price.idx')
+        fix_key(data_dict, 'cons_conf_idx', 'cons.conf.idx')
+        fix_key(data_dict, 'nr_employed', 'nr.employed')
+        #
+        logging.warning(f"DD:{data_dict}")
+        data_df = pd.DataFrame.from_dict(data_dict)
+        logging.warning(f"DF:{data_df}")
+        result = model.predict(data_df)
         return json.dumps({"result": result.tolist()})
     except Exception as e:
         result = str(e)
         return json.dumps({"error": result})
+
+# d: dictionary, k: key, new_k: new key
+def fix_key(d, k, new_k):
+    d[new_k] = d[k]
+    del d[k]
+
+# test app booted up properly
+@app.get('/')
+def hello():
+    return "loan-predictor"
