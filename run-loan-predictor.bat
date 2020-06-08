@@ -1,1 +1,1 @@
-uvicorn loan-predictor.app.main:app --host localhost --port 808
+uvicorn loan-predictor.app.main:app --host localhost --port 8081

@@ -7,9 +7,6 @@ REL_VERSION ?=latest
 DOCKER:=docker
 DOCKERFILE:=Dockerfile
 
-# App Port
-APP_PORT:=808
-
 # buildAppImage
 # Params:
 # $(1): app name
@@ -74,7 +71,7 @@ get-app-logs:
 .PHONY: port-forward
 port-forward: set-app-pod-name port-forward-app
 port-forward-app:
-	kubectl port-forward $(APP_POD_NAME) $(APP_PORT):$(APP_PORT)
+	kubectl port-forward $(APP_POD_NAME) $(port):$(port)
 
 ## use CLUSTER
 use-context:
@@ -103,14 +100,14 @@ re-build-deploy: build push undeploy deploy
 # Params:
 # $(1): app name
 define runApp
-	dapr run --app-id $(1) --app-port 808 run-$(1).bat
+	dapr run --app-id $(1) --app-port $(2) run-$(1).bat
 endef
 #
 # DEV: Run apps services in local standalone dev mode (Docker Desktop)
 #
 .PHONY: dev
 dev:
-	$(foreach APP,$(APPS),$(call runApp,$(APP)))
+	$(call runApp,$(app),$(port))
 
 #
 # QA: Build and redeploy to k8s-qa
@@ -130,6 +127,13 @@ upgrade-services:
 	helm repo update
 	helm upgrade redis bitnami/redis
 	helm upgrade dapr dapr/dapr -n dapr-system
+
+#
+# Dev: upgrade services
+#
+.PHONY: upgrade-dev
+upgrade-dev:
+	dapr init --runtime-version latest
 
 #
 # QA: upgrade services
