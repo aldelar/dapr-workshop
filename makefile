@@ -125,7 +125,7 @@ set-prod-env:
 # Params:
 # $(1): app name
 define runApp
-	dapr run --app-id $(1) --app-port $(2) run-$(1).bat
+	dapr run --components-path components --app-id $(1) --app-port $(2) run-$(1).bat
 endef
 #
 # DEV: Run apps services in local standalone dev mode (Docker Desktop)
@@ -159,6 +159,7 @@ upgrade-services:
 .PHONY: upgrade-dev
 upgrade-dev:
 	powershell -Command "iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1 | iex"
+	dapr uninstall --all
 	dapr init --runtime-version latest
 
 #
