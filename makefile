@@ -3,33 +3,63 @@ APPS      	?=loan-predictor
 REGISTRY 	?=.azurecr.io/daprworkshop
 REL_VERSION ?=latest
 
+# Target setup
+QA_REGISTRY_PREFIX:=daprworkshopaksqaacr
+QA_TARGET_PREFIX:=qa
+PROD_REGISTRY_PREFIX:=daprworkshopacr
+PROD_TARGET_PREFIX:=prod
+
 # Docker image build and push setting
 DOCKER:=docker
 DOCKERFILE:=Dockerfile
 
-# buildAppImage
 # Params:
 # $(1): app name
 # $(2): tag name
 # $(3): registry prefix
-define buildAppImage
+# $(4): target prefix
+define genDockerImageBuild
+.PHONY: build-$(4)-$(1)
+build-$(4)-$(1):
 	$(DOCKER) build -f $(1)/$(DOCKERFILE) $(1)/. -t $(3)$(REGISTRY)/$(1):$(2)
 endef
-.PHONY: build
-build:
-	$(foreach APP,$(APPS),$(call buildAppImage,$(APP),$(REL_VERSION),$(REGISTRY_PREFIX)))
 
-# pushAppImage
+# Generate docker image build targets: QA
+$(foreach APP,$(APPS),$(eval $(call genDockerImageBuild,$(APP),$(REL_VERSION),$(QA_REGISTRY_PREFIX),$(QA_TARGET_PREFIX))))
+# Generate docker image build targets: PROD
+$(foreach APP,$(APPS),$(eval $(call genDockerImageBuild,$(APP),$(REL_VERSION),$(PROD_REGISTRY_PREFIX),$(PROD_TARGET_PREFIX))))
+
+# QA: build-qa
+.PHONY: build-qa
+build-qa: $(foreach APP,$(APPS),build-$(QA_TARGET_PREFIX)-$(APP))
+
+# PROD: build-prod
+.PHONY: build-prod
+build-prod: $(foreach APP,$(APPS),build-$(PROD_TARGET_PREFIX)-$(APP))
+
+# Generate docker image push targets
 # Params:
 # $(1): app name
 # $(2): tag name
 # $(3): registry prefix
-define pushAppImage
+# $(4): target prefix
+define genDockerImagePush
+.PHONY: push-$(4)-$(1)
+push-$(4)-$(1):
 	$(DOCKER) push $(3)$(REGISTRY)/$(1):$(2)
 endef
-.PHONY: push
-push:
-	$(foreach APP,$(APPS),$(call pushAppImage,$(APP),$(REL_VERSION),$(REGISTRY_PREFIX)))
+# Generate docker image push targets: QA
+$(foreach APP,$(APPS),$(eval $(call genDockerImagePush,$(APP),$(REL_VERSION),$(QA_REGISTRY_PREFIX),$(QA_TARGET_PREFIX))))
+# Generate docker image push targets: PROD
+$(foreach APP,$(APPS),$(eval $(call genDockerImagePush,$(APP),$(REL_VERSION),$(PROD_REGISTRY_PREFIX),$(PROD_TARGET_PREFIX))))
+
+# QA: push-qa
+.PHONY: push-qa
+push-qa: $(foreach APP,$(APPS),push-$(QA_TARGET_PREFIX)-$(APP))
+
+# PROD: push-prod
+.PHONY: push-prod
+push-prod: $(foreach APP,$(APPS),push-$(PROD_TARGET_PREFIX)-$(APP))
 
 # Deploy all components and services
 .PHONY: deploy
@@ -71,9 +101,10 @@ get-app-logs:
 .PHONY: port-forward
 port-forward: set-app-pod-name port-forward-app
 port-forward-app:
-	kubectl port-forward $(APP_POD_NAME) $(port):$(port)
+	kubectl port-forward $(APP_POD_NAME) $(port):808
 
 ## use CLUSTER
+.PHONY: use-context
 use-context:
 	kubectl config use-context $(CLUSTER)
 	kubectl config get-contexts
@@ -82,19 +113,13 @@ use-context:
 use-qa: set-qa-env use-context
 set-qa-env:
 	$(eval CLUSTER := daprworkshopqaaks)
-	$(eval REGISTRY_PREFIX := daprworkshopaksqaacr)
 	$(eval COMPONENTS_SUFFIX := -qa)
 # set PROD
 .PHONY: use-prod
 use-prod: set-prod-env use-context
 set-prod-env:
 	$(eval CLUSTER := daprworkshopaks)
-	$(eval REGISTRY_PREFIX := daprworkshopacr)
 	$(eval COMPONENTS_SUFFIX := -prod)
-
-#
-.PHONY: re-build-deploy
-re-build-deploy: build push undeploy deploy
 
 # runApp
 # Params:
@@ -113,13 +138,13 @@ dev:
 # QA: Build and redeploy to k8s-qa
 #
 .PHONY: qa
-qa: use-qa re-build-deploy
+qa: use-qa build-qa push-qa undeploy deploy
 
 #
 # PRODUCTION: Build and redeploy to k8s
 #
 .PHONY: prod
-prod: use-prod re-build-deploy
+prod: use-prod build-prod push-prod undeploy deploy
 
 # Upgrade Services
 .PHONE: upgrade-services
