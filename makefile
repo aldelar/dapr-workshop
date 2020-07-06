@@ -158,6 +158,7 @@ upgrade-services:
 #
 .PHONY: upgrade-dev
 upgrade-dev:
+	powershell -Command "iwr -useb https://raw.githubusercontent.com/dapr/cli/master/install/install.ps1 | iex"
 	dapr init --runtime-version latest
 
 #
