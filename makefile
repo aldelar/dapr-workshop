@@ -125,14 +125,14 @@ set-prod-env:
 # Params:
 # $(1): app name
 define runApp
-	dapr run --components-path components --app-id $(1) --app-port $(2) run-$(1).bat
+	dapr run --components-path components --app-id $(1) run-$(1).bat
 endef
 #
 # DEV: Run apps services in local standalone dev mode (Docker Desktop)
 #
 .PHONY: dev
 dev:
-	$(call runApp,$(app),$(port))
+	$(call runApp,$(app))
 
 #
 # QA: Build and redeploy to k8s-qa
